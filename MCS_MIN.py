@@ -1,6 +1,5 @@
 import pandas as pd
 
-# Dane dla oryginalnego scenariusza
 original_data = {
     "Metric": [
         "EPS", "BVPS", "ROE", "DPR", "Retention Ratio (b)", "Growth Rate (g)", "Cost of Equity (r_e)",
@@ -16,7 +15,6 @@ original_data = {
     ]
 }
 
-# Dane dla scenariusza z DPR = 90%
 new_dpr_data = {
     "Metric": [
         "DPR (new)", "Retention Ratio (b) new",
@@ -26,11 +24,9 @@ new_dpr_data = {
     "Value": [0.90, 0.10, 0.024, 4.32, 29.1]
 }
 
-# Tworzenie DataFrame’ów
 df_original = pd.DataFrame(original_data)
 df_new_dpr = pd.DataFrame(new_dpr_data)
 
-# Wydruk w formacie CSV (kopiuj do Excela)
 print("Original Scenario Metrics")
 print(df_original.to_csv(index=False))
 print("\nNew DPR = 90% Scenario Metrics")
