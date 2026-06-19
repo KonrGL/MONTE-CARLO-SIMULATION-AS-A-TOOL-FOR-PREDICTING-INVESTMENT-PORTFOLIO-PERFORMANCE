@@ -62,9 +62,6 @@ sns.heatmap(covar_matrix,annot=True,cmap="coolwarm", fmt=".4f", linewidths=0.6)
 plt.title("Annualized Covariance Matrix Heatmap")
 plt.show()
 
-#AXON has pojebany covariancei autocorrelation z samym sobą, ale go generalnie
-#zostawiam bo załóżmy, że to będzie dobra akcja do wyboru przy high-risk-high-reward
-#type of portfolio, szczególnie w maximus risk portfolio scenario
 
 ##############################################################################################
 #Splitting the portfolio and creating scenarios
@@ -74,7 +71,7 @@ def portfolio_returns(weights,covar_matrix):
     return sum(weights*covar_matrix)
 #2. Defining portfolio voatility
 def portfolio_volatility(weights,covar_matrix):
-    variance = weights @ covar_matrix @ weights #przypominajka,, '@' to jest matrix multiplication czy tam mnożenie macierzy
+    variance = weights @ covar_matrix @ weights 
     return np.sqrt(variance)
 #3. Defining sharpe ratio
 def sharpe_ratio(weights,expected_returns,covar_matrix,risk_free_rate):
@@ -86,15 +83,11 @@ rfr = 0.0455 #Risk-Free Rate na rynek Amerykański (bo stocki są z USA to obecn
 number_of_assets = len(log_ror_columns)
 bounds = [(0,0.3)]*number_of_assets
 
-#Ustawiłem granice na 30% by lepiej zoptymalizować ilość akcji w portfolio
-#moim uzasadnieniem jest to, że funkcja często (szczególnie w scenariuszu maksymalnym) ma tendencje do wybierania
-# jednej akcji z maksymalnym ryzykiem, co jest oczywiście ryzykowne, ale kłóci się z zasadami dywersyfikacji
-#dlatego też, by zmaksymalizować ryzyko, ale i zminimalizować głupotę, ustawiam granice
-#maksymalnie 30% udziału jednej akcji w całym portfolio
+
 
 constraints = [{'type': 'eq', 'fun': lambda w: np.sum(w) - 1}] #suma akcji w portfolio = 1
 initial_weights = np.array([1/number_of_assets]*number_of_assets)
-#ustawia punkt startowy dla kodu, mianowice przy ilości 9 to 11.11(1)% dla każdej spółki
+#ustawiam punkt startowy dla kodu, mianowice przy ilości 9 to 11.11(1)% dla każdej spółki
 #dzięki temu kod ma punt odniesienia do dalszych przekształceń
 
 #1. Scenariusz Maksymalne Ryzyko - Maksymalne Zwroty
