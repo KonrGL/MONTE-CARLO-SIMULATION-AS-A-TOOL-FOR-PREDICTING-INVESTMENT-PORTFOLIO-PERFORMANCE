@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 
-# === PARAMETRY ===
+#PARAMETRY
 mu = 0.0020259
 sigma = 0.01585
 n_days = 252
@@ -10,7 +10,7 @@ n_simulations = 10000
 S_0 = 27779.2094
 n_paths_to_plot = 1000
 
-# === OPCJONALNA TRAJEKTORIA RZECZYWISTA ===
+# OPCJONALNA TRAJEKTORIA RZECZYWISTA
 actual_trajectory = [
     27761.3484,
     28356.2654,
@@ -267,7 +267,7 @@ actual_trajectory = [
 ]
 
 
-# === SYMULACJA ===
+#SYMULACJA
 dt = 1
 simulated_paths = np.zeros((n_days + 1, n_simulations))
 simulated_paths[0] = S_0
@@ -276,16 +276,16 @@ for t in range(1, n_days + 1):
     Z = np.random.normal(0, 1, n_simulations)
     simulated_paths[t] = simulated_paths[t - 1] * np.exp((mu - 0.5 * sigma**2) * dt + sigma * np.sqrt(dt) * Z)
 
-# === STATYSTYKI ===
+#STATYSTYKI
 mean_path = simulated_paths.mean(axis=1)
 percentile_5 = np.percentile(simulated_paths, 5, axis=1)
 percentile_95 = np.percentile(simulated_paths, 95, axis=1)
 
-# === LOSOWE ŚCIEŻKI DO WYKRESU ===
+#LOSOWE ŚCIEŻKI DO WYKRESU
 sampled_indices = random.sample(range(n_simulations), n_paths_to_plot)
 colors = [np.random.rand(3,) for _ in range(n_paths_to_plot)]
 
-# === WYKRES: Trajektorie Monte Carlo ===
+#WYKRES: Trajektorie Monte Carlo
 plt.figure(figsize=(12, 6))
 
 # 1. Losowe trajektorie
@@ -315,19 +315,18 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
-# === OSOBNY WYKRES: Boxplot końcowych wartości ===
+#OSOBNY WYKRES: Boxplot końcowych wartości
 plt.figure(figsize=(10, 2.5))
 
 final_values = simulated_paths[-1]
 
-# --- OBLICZENIE STATYSTYK ---
+# OBLICZENIE STATYSTYKI
 min_val = np.min(final_values)
 q1 = np.percentile(final_values, 25)
 median = np.median(final_values)
 q3 = np.percentile(final_values, 75)
 max_val = np.max(final_values)
 
-# --- DRUKOWANIE STATYSTYK ---
 import scipy.stats as stats
 
 mean = np.mean(final_values)
@@ -342,7 +341,6 @@ lower_bound = q1 - 1.5 * iqr
 upper_bound = q3 + 1.5 * iqr
 outliers = final_values[(final_values < lower_bound) | (final_values > upper_bound)]
 
-# --- DRUK ---
 print("=== Boxplot Statistics for Final Portfolio Values ===")
 print(f"Minimum:         {min_val:,.2f} PLN")
 print(f"Q1 (25%):        {q1:,.2f} PLN")
@@ -358,13 +356,13 @@ print(f"Kurtosis:        {kurt:.4f}")
 print(f"Number of Outliers: {len(outliers)}")
 
 
-# --- WYKRES ---
+
 box = plt.boxplot(final_values, vert=False, patch_artist=True,
                   boxprops=dict(facecolor='lightblue', color='blue'),
                   medianprops=dict(color='red'),
                   flierprops=dict(marker='o', markerfacecolor='orange', markersize=4, linestyle='none'))
 
-# Dodanie opisu w legendzie
+
 plt.legend([box['boxes'][0], box['medians'][0], box['fliers'][0]],
            ['Residual Value Distribution', 'Median', 'Outliers'],
            loc='upper right')
@@ -379,7 +377,6 @@ import pandas as pd
 import numpy as np
 import scipy.stats as stats
 
-# --- Dane do MAPE na poziomie dni (średnia trajektorii vs rzeczywiste) ---
 actual_array = np.array(actual_trajectory[:n_days])    # 252 dni
 predicted_mean = mean_path[1:]                          # 252 dni pomijamy dzień 0
 
@@ -405,7 +402,6 @@ summary_row = pd.DataFrame({
 
 df_mape_daily = pd.concat([df_mape_daily, summary_row], ignore_index=True)
 
-# --- Statystyki końcowych wartości symulacji (boxplot stats) ---
 final_values = simulated_paths[-1]
 
 min_val = np.min(final_values)
@@ -431,7 +427,7 @@ boxplot_stats = pd.DataFrame({
               mean_val, std_val, iqr_val, cv_val, skewness, kurt, len(outliers)]
 })
 
-# --- MAPE dla każdej symulacji ---
+#MAPE
 mape_all = []
 for i in range(n_simulations):
     sim = simulated_paths[1:, i]
@@ -444,13 +440,13 @@ df_mape_all = pd.DataFrame({
     "MAPE [%]": mape_all
 })
 
-# --- Podsumowanie MAPE ---
+
 mape_summary = pd.DataFrame({
     "Metric": ["MAPE dla średniej trajektorii", "Średnia MAPE ze wszystkich symulacji"],
     "Value": [mape_mean, mape_avg_all]
 })
 
-# --- Zapis do Excela (jeden plik, kilka arkuszy) ---
+#Zapis do ExcelaA
 output_path = r"C:\Users\lucif\Desktop\Studia\Masters Thesis\Masterka For Real\MSC\mape_kompletne_wyniki.xlsx"
 
 with pd.ExcelWriter(output_path, engine="openpyxl") as writer:
