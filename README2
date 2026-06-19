@@ -1,0 +1,50 @@
+# Portfolio Performance Prediction via Monte Carlo Simulation
+
+## Overview
+The purpose of this study is to assess the effectiveness of **Monte Carlo simulation** as a tool for predicting investment portfolio performance. This method is particularly suitable due to its ability to incorporate randomness and market uncertainty. 
+
+The analysis focuses on companies listed on the **Warsaw Stock Exchange**, specifically twelve entities from the **WIG30 index** selected based on low return correlation. Three portfolios were constructed and subjected to a Monte Carlo simulation of **10,000 iterations** to forecast future performance, with the predicted results ultimately compared to actual historical outcomes.
+
+---
+
+## Methodology
+
+### 1. Asset Selection & Correlation
+* **Target Index:** WIG30 (Warsaw Stock Exchange)
+* **Selection Criteria:** 12 entities chosen based on low return correlation using **Pearson’s coefficient** and **heatmap visualization**.
+* **Objective:** Ensure a balance between diversification and computational complexity, enabling effective implementation of the **Markowitz mean-variance model** in Python.
+
+### 2. Portfolio Construction
+Three distinct portfolios were constructed based on Modern Portfolio Theory:
+* **Maximum Return Portfolio**
+* **Optimal Portfolio**
+* **Minimum Risk Portfolio**
+
+### 3. Evaluation Metric
+Portfolio performance is evaluated using the **Mean Absolute Percentage Error (MAPE)**. A **10% threshold** was set, representing a balance between prediction accuracy and the volatility of the Polish stock market.
+
+---
+
+## Project Structure & File Descriptions
+
+To improve clarity and organization, the original code was refactored and split into four distinct scripts. Additionally, to avoid calculation inconsistencies, the logarithmic returns were calculated manually within the Excel source file. 
+
+* **`MPT.py`**: This script handles the initial data processing and sampling/weight generation for the three portfolio versions, utilizing the pre-calculated logarithmic returns from the Excel file.
+* **`MCS_MAX.py`**: Runs the Monte Carlo simulation to forecast and analyze the behavior of the **Maximum Return** portfolio.
+* **`MCS_MIN.py`**: Runs the Monte Carlo simulation to forecast and analyze the behavior of the **Minimum Risk** portfolio.
+* **`MCS_OPT.py`**: Runs the Monte Carlo simulation to forecast and analyze the behavior of the **Optimal** portfolio.
+* **`Raw_Version.py`**: The previous, monolithic version of the project representing the first attempt at implementing the simulation.
+
+---
+
+## Getting Started & Usage
+
+### Prerequisites
+Make sure you have Python installed along with the required libraries (such as `pandas`, `numpy`, `matplotlib`). 
+
+### Running the Scripts
+Because the data workflow is distributed across multiple files, **every script requires you to provide the absolute path to your Excel file** (`WIG30.xlsx`) upon execution.
+
+When prompted in the terminal:
+```text
+Podaj pełną ścieżkę do pliku Excel (z \ zamiast /):
